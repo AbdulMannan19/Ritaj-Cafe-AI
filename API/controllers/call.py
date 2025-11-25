@@ -135,3 +135,16 @@ def send_menu_link():
     except Exception as e:
         print(f"❌ WhatsApp error: {e}")
         return jsonify({'error': str(e)}), 500
+
+
+@call_bp.route('/get-current-day', methods=['POST'])
+def get_current_day():
+    """Get the current day of the week for daily specials"""
+    from services.day_service import DayService
+    
+    day_service = DayService()
+    current_day = day_service.get_current_day()
+    
+    print(f"📅 Current day requested: {current_day}")
+    
+    return jsonify({'day': current_day}), 200

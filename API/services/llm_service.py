@@ -4,9 +4,12 @@ import google.generativeai as genai
 from typing import Dict, Any, Optional
 from .supabase_service import SupabaseService
 from .geocoding_service import GeocodingService
+from .day_service import DayService
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+RESTAURANT_NAME = "Ritaj Restaurant"
+MENU_LINK = "https://baba-chai.vercel.app"
 
 
 def generate_system_prompt(menu_data: Dict[str, Any]) -> str:
@@ -15,22 +18,57 @@ def generate_system_prompt(menu_data: Dict[str, Any]) -> str:
     for category, items in menu_data.items():
         menu_text += f"{category.upper()}:\n"
         for item in items:
-            menu_text += f"  - {item['name']} ${item['price']}\n"
+            menu_text += f"  - {item['name']} ${item['price']}"
+            if not item.get('is_available', True):
+                menu_text += " (Not available currently)"
+            menu_text += "\n"
         menu_text += "\n"
     
-    return f"""You are Emma, a friendly assistant from AI Cafe. Help customers browse menu, place orders, and check order status.
+    # Add hardcoded daily specials
+    menu_text += """DAILY SPECIALS (All $18.00, available only on specific days):
 
-GREETING: Always start the first conversation with: "Hello, I am Emma from AI Cafe, what would you like to order today?"
+LUNCH:
+  - Kadhai Gosht with Batana Rice (Monday)
+  - Khichdi Khatta Keema (Tuesday)
+  - Green Mutton (Tuesday)
+  - Mutton Khorma with Bagara Khana-Dalcha (Wednesday)
+  - Dum Ka Mutton (Thursday)
+  - Mutton Maikhaliya (Friday)
+  - Mutton Khorma with Bagara Khana-Dalcha (Saturday)
+  - Hyderabadi Mutton with Zeera Rice (Sunday)
+
+DINNER:
+  - Turai Gosht (Monday)
+  - Gosht Ki Kadhi (Tuesday)
+  - Mutton Marag (Wednesday)
+  - Mutton Do Peyaza (Wednesday)
+  - Tomato Gosht (Thursday)
+  - Alo-Methi Gosht (Friday)
+  - Arwi Gosht (Saturday)
+  - Kofta Masala (Saturday)
+  - Bhindi Gosht (Sunday)
+
+"""
+    
+    return f"""You are Emma, a friendly assistant for {RESTAURANT_NAME}. Help customers browse menu, place orders, and check order status.
+
+GREETING: Always start the first conversation with: "Hello, I am Emma from {RESTAURANT_NAME}, what would you like to order today?"
 
 {menu_text}
 
 MENU SHARING:
-- If customer asks for full menu, share this link: https://baba-chai.vercel.app
+- If customer asks for full menu, share this link: {MENU_LINK}
 - You already have the complete menu above - use it to help customers
+
+DAILY SPECIALS:
+- When customer asks about daily specials or today's specials, ALWAYS use get_current_day() tool first
+- The tool returns the current day in UAE timezone
+- Then recommend the appropriate lunch/dinner specials for that day
 
 Available tools:
 - place_order(items: dict, delivery_address: string, special_requests: optional string) - Place order
 - get_order_status() - Check customer's orders
+- get_current_day() - Get the current day of the week (UAE time) to check daily specials availability
 
 IMPORTANT ORDERING RULES:
 1. Match customer's item names to actual menu items (e.g., "Glory milkshake" → "Glory", "fries" → "French Fries")
@@ -75,10 +113,12 @@ class ToolHandler:
         phone_number: str,
         db_service: Optional[SupabaseService] = None,
         geocoding_service: Optional[GeocodingService] = None,
+        day_service: Optional[DayService] = None,
     ):
         self.phone_number = phone_number
         self.db_service = db_service or SupabaseService()
         self.geocoding_service = geocoding_service or GeocodingService()
+        self.day_service = day_service or DayService()
 
     def execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> str:
         try:
@@ -86,6 +126,8 @@ class ToolHandler:
                 return self._place_order(tool_input)
             elif tool_name == "get_order_status":
                 return self._get_order_status()
+            elif tool_name == "get_current_day":
+                return self._get_current_day()
             else:
                 return f"Unknown tool: {tool_name}"
         except Exception as e:
@@ -164,6 +206,10 @@ class ToolHandler:
             result += f"Items: {order['items']}\n"
             result += f"Total: ${order['total_amount']}\n\n"
         return result
+    
+    def _get_current_day(self) -> str:
+        """Get the current day of the week"""
+        return self.day_service.get_current_day()
 
 
 class LLMService:
@@ -210,6 +256,13 @@ class LLMService:
                     genai.protos.FunctionDeclaration(
                         name="get_order_status",
                         description="Gets order status for the customer",
+                        parameters=genai.protos.Schema(
+                            type=genai.protos.Type.OBJECT, properties={}
+                        ),
+                    ),
+                    genai.protos.FunctionDeclaration(
+                        name="get_current_day",
+                        description="Gets the current day of the week (e.g., Monday, Tuesday) to check which daily specials are available",
                         parameters=genai.protos.Schema(
                             type=genai.protos.Type.OBJECT, properties={}
                         ),

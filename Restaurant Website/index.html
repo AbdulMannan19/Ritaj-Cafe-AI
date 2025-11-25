@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ritaj Restaurant - Authentic Indian Cuisine in Abu Dhabi. Experience premium dining with traditional flavors.">
+    <title>Ritaj Restaurant | Premium Indian Dining in Abu Dhabi</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Hind:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo">Ritaj</div>
+
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <div class="language-switcher">
+                            <button class="lang-btn active" data-lang="en">EN</button>
+                            <button class="lang-btn" data-lang="ar">AR</button>
+                            <button class="lang-btn" data-lang="hi">HI</button>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title" data-translate="hero-title">Ritaj</h1>
+            <p class="hero-subtitle" data-translate="hero-subtitle">Authentic Indian Cuisine</p>
+
+            <div class="hero-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span data-translate="hero-location">Electra Street, Abu Dhabi, UAE</span>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">
+                    <i class="fas fa-utensils"></i>
+                    <span data-translate="btn-menu">View Menu</span>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <i class="fas fa-phone"></i>
+                    <span data-translate="btn-contact">Contact Us</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+        <div class="section-title">
+            <h2 data-translate="about-title">About Ritaj</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="about-content">
+            <div class="about-text">
+                <p data-translate="about-text-1">
+                    Welcome to Ritaj Restaurant, where tradition meets excellence. Located in the heart of Abu Dhabi,
+                    we bring you the finest Indian cuisine crafted with passion and authenticity.
+                </p>
+                <p data-translate="about-text-2">
+                    Our chefs use only the freshest ingredients and time-honored recipes to create dishes that
+                    transport you to the rich culinary heritage of India. Every meal is a celebration
+                    of flavor, culture, and hospitality.
+                </p>
+                <p data-translate="about-text-3">
+                    Whether you're joining us for a family gathering, business lunch, or romantic dinner,
+                    Ritaj offers an unforgettable dining experience in an elegant atmosphere.
+                </p>
+            </div>
+
+            <div class="about-features">
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h3 data-translate="feature-quality">Premium Quality</h3>
+                    <p data-translate="feature-quality-desc">Fresh ingredients, authentic recipes</p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3 data-translate="feature-cuisine">Traditional Cuisine</h3>
+                    <p data-translate="feature-cuisine-desc">Time-honored Indian dishes</p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3 data-translate="feature-hospitality">Warm Hospitality</h3>
+                    <p data-translate="feature-hospitality-desc">Exceptional service, welcoming atmosphere</p>
+                </div>
+
+                <div class="feature-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3 data-translate="feature-location">Prime Location</h3>
+                    <p data-translate="feature-location-desc">Conveniently located in Abu Dhabi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section class="menu" id="menu">
+        <div class="section-title">
+            <h2 data-translate="menu-title">Our Menu</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="menu-tabs">
+            <button class="menu-tab active" data-page="1">Page 1</button>
+            <button class="menu-tab" data-page="2">Page 2</button>
+            <button class="menu-tab" data-page="3">Page 3</button>
+            <button class="menu-tab" data-page="4">Page 4</button>
+            <button class="menu-tab" data-page="5">Page 5</button>
+            <button class="menu-tab" data-page="6">Page 6</button>
+        </div>
+
+        <div class="menu-content">
+            <div class="menu-page active" id="page-1">
+                <img src="assets/menu/menu-1.jpg" alt="Menu Page 1" loading="lazy">
+            </div>
+            <div class="menu-page" id="page-2">
+                <img src="assets/menu/menu-2.jpg" alt="Menu Page 2" loading="lazy">
+            </div>
+            <div class="menu-page" id="page-3">
+                <img src="assets/menu/menu-3.jpg" alt="Menu Page 3" loading="lazy">
+            </div>
+            <div class="menu-page" id="page-4">
+                <img src="assets/menu/menu-4.jpg" alt="Menu Page 4" loading="lazy">
+            </div>
+            <div class="menu-page" id="page-5">
+                <img src="assets/menu/menu-5.jpg" alt="Menu Page 6" loading="lazy">
+            </div>
+            <div class="menu-page" id="page-6">
+                <img src="assets/menu/menu-6.jpg" alt="Menu Page 6" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="gallery" id="gallery">
+        <div class="section-title">
+            <h2 data-translate="gallery-title">Gallery</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item" data-image="assets/images/gallery3.png">
+                <img src="assets/images/gallery3.png" alt="Indian Dish" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-image="assets/images/gallery4.png">
+                <img src="assets/images/gallery4.png" alt="Main Course" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-image="assets/images/gallery7.png">
+                <img src="assets/images/gallery7.png" alt="Traditional Dish" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close" id="lightboxClose">
+                <i class="fas fa-times"></i>
+            </span>
+            <img src="" alt="Gallery Image" id="lightboxImage">
+        </div>
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2 data-translate="contact-title">Contact Us</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3 data-translate="contact-address-title">Address</h3>
+                        <p data-translate="contact-address">
+                            Electra Street - Main<br>
+                            P.O. Box: 27034<br>
+                            Abu Dhabi - UAE
+                        </p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3 data-translate="contact-phone-title">Phone</h3>
+                        <p>
+                            <a href="tel:+97126310036">02-6310036</a><br>
+                            <a href="tel:+97126333097">02-6333097</a><br>
+                            <a href="tel:+971505124537">050-5124537</a><br>
+                            <a href="tel:+971597723449">059-7723449</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3 data-translate="contact-hours-title">Opening Hours</h3>
+                        <p data-translate="contact-hours">
+                            Saturday - Thursday: 8:00 AM - 12:00 AM<br>
+                            Friday: 12:00 PM - 12:00 AM
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fab fa-instagram"></i>
+                    <div>
+                        <h3 data-translate="contact-social-title">Follow Us</h3>
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/ritaj.restaurant/" target="_blank" class="social-link"
+                                aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3 data-translate="contact-reservation-title">Reservations</h3>
+                        <p data-translate="contact-reservation">
+                            Call us to reserve your table and experience<br>
+                            the finest Indian dining in Abu Dhabi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p data-translate="footer-text">&copy; 2024 Ritaj Restaurant. All rights reserved. | Premium Indian
+            Dining in Abu Dhabi</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>

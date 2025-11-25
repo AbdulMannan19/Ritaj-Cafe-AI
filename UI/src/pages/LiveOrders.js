@@ -16,10 +16,31 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
     if (error) {
       console.error('Error updating status:', error);
       alert('Failed to update status');
-    } else {
-      onOrderUpdate();
+      setUpdatingStatus(null);
+      return;
     }
     
+    // Send WhatsApp notification for ON_ROUTE and DELIVERED statuses
+    if (newStatus === 'ON_ROUTE' || newStatus === 'DELIVERED') {
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/chat/notify-status`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ order_id: orderId }),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to send notification');
+        }
+      } catch (err) {
+        console.error('Error sending notification:', err);
+      }
+    }
+    
+    onOrderUpdate();
     setUpdatingStatus(null);
   };
 
@@ -118,16 +139,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
                 )}
 
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {order.status !== 'PREPARING' && (
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => updateOrderStatus(order.order_id, 'PREPARING')}
-                      disabled={updatingStatus === order.order_id}
-                    >
-                      Mark Preparing
-                    </button>
-                  )}
-                  {order.status !== 'ON_ROUTE' && (
+                  {order.status === 'PREPARING' && (
                     <button
                       className="btn btn-primary"
                       onClick={() => updateOrderStatus(order.order_id, 'ON_ROUTE')}
@@ -136,7 +148,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
                       Mark On Route
                     </button>
                   )}
-                  {order.status !== 'DELIVERED' && (
+                  {order.status === 'ON_ROUTE' && (
                     <button
                       className="btn btn-success"
                       onClick={() => updateOrderStatus(order.order_id, 'DELIVERED')}

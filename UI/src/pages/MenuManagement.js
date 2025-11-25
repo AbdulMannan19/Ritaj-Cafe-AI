@@ -2,18 +2,16 @@ import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
 
-const MenuManagement = ({ menuItems, onMenuUpdate }) => {
+const MenuManagement = ({ menuItems, categories = [], onMenuUpdate }) => {
   const [editingItem, setEditingItem] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newItem, setNewItem] = useState({
     name: '',
-    category: 'Bread',
+    category: categories[0] || '',
     description: '',
     price: '',
     is_available: true
   });
-
-  const categories = ['Healthy Juice', 'Hot Beverages', 'Kada', 'Milk Shake & Ice Cream', 'Mutton', 'Rabit', 'Bread', 'Breake Fast', 'Camel', 'Club Sandwich', 'Combo', 'Duck'];
 
   const handleAddItem = async (e) => {
     e.preventDefault();
@@ -31,7 +29,7 @@ const MenuManagement = ({ menuItems, onMenuUpdate }) => {
     } else {
       setNewItem({
         name: '',
-        category: 'Bread',
+        category: categories[0] || '',
         description: '',
         price: '',
         is_available: true

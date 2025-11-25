@@ -17,9 +17,3 @@ git status
 git add .
 git commit -m "quick commit"
 git push
-
-To Do
-
-Cleaner termnical output
-Tailored first message for hi hello
-dont say order id, say updates will be sent

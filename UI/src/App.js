@@ -12,6 +12,7 @@ function App() {
   });
   const [orders, setOrders] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   // Save active page to localStorage whenever it changes
   const handlePageChange = (page) => {
@@ -22,6 +23,7 @@ function App() {
   useEffect(() => {
     fetchOrders();
     fetchMenuItems();
+    fetchCategories();
   }, []);
 
   const fetchOrders = async () => {
@@ -50,12 +52,26 @@ function App() {
     }
   };
 
+  const fetchCategories = async () => {
+    const { data, error } = await supabase
+      .from('menu')
+      .select('category');
+
+    if (error) {
+      console.error('Error fetching categories:', error);
+    } else {
+      // Extract unique categories and sort them
+      const uniqueCategories = [...new Set(data.map(item => item.category))].sort();
+      setCategories(uniqueCategories);
+    }
+  };
+
   const renderPage = () => {
     switch (activePage) {
       case 'orders':
         return <LiveOrders orders={orders} onOrderUpdate={fetchOrders} menuItems={menuItems} />;
       case 'menu':
-        return <MenuManagement menuItems={menuItems} onMenuUpdate={fetchMenuItems} />;
+        return <MenuManagement menuItems={menuItems} categories={categories} onMenuUpdate={() => { fetchMenuItems(); fetchCategories(); }} />;
       case 'analytics':
         return <Analytics orders={orders} menuItems={menuItems} />;
       default:

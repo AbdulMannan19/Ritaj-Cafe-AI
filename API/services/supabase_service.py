@@ -4,6 +4,8 @@ from supabase import create_client, Client
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 
+from .day_service import DayService
+
 load_dotenv()
 
 
@@ -38,8 +40,20 @@ class SupabaseService:
 
             response = query.execute()
 
+            current_day = DayService.get_current_day()
+
             grouped_menu = {}
             for item in response.data:
+                # Check availability based on day
+                if item.get("description") and "Available on" in item["description"]:
+                    try:
+                        required_day = item["description"].split("Available on")[1].strip()
+                        # Case-insensitive check
+                        if required_day.lower() != current_day.lower():
+                            item["is_available"] = False
+                    except Exception as e:
+                        print(f"Error parsing day availability for {item['name']}: {e}")
+
                 cat = item["category"]
                 if cat not in grouped_menu:
                     grouped_menu[cat] = []

@@ -7,8 +7,7 @@ def main():
     print("=== Restaurant Chat Test ===")
     print("Type 'exit' or 'quit' to stop\n")
     
-    # Use test phone number
-    test_phone = "+1234567890"
+    test_phone = "+19132636353"
     llm_service = LLMService(phone_number=test_phone)
     
     print("Bot: Starting conversation...\n")

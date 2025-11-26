@@ -9,7 +9,7 @@ from .day_service import DayService
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 RESTAURANT_NAME = "Ritaj Restaurant"
-MENU_LINK = "https://baba-chai.vercel.app"
+MENU_LINK = "https://ritaj-cafe-ai-x4n5.vercel.app"
 
 
 def generate_system_prompt(menu_data: Dict[str, Any]) -> str:
@@ -20,35 +20,15 @@ def generate_system_prompt(menu_data: Dict[str, Any]) -> str:
         for item in items:
             menu_text += f"  - {item['name']} ${item['price']}"
             if not item.get('is_available', True):
-                menu_text += " (Not available currently)"
+                description = item.get('description')
+                if description and "Available on" in description:
+                    menu_text += f" ({description})"
+                else:
+                    menu_text += " (Not available currently)"
             menu_text += "\n"
         menu_text += "\n"
     
-    # Add hardcoded daily specials
-    menu_text += """DAILY SPECIALS (All $18.00, available only on specific days):
 
-LUNCH:
-  - Kadhai Gosht with Batana Rice (Monday)
-  - Khichdi Khatta Keema (Tuesday)
-  - Green Mutton (Tuesday)
-  - Mutton Khorma with Bagara Khana-Dalcha (Wednesday)
-  - Dum Ka Mutton (Thursday)
-  - Mutton Maikhaliya (Friday)
-  - Mutton Khorma with Bagara Khana-Dalcha (Saturday)
-  - Hyderabadi Mutton with Zeera Rice (Sunday)
-
-DINNER:
-  - Turai Gosht (Monday)
-  - Gosht Ki Kadhi (Tuesday)
-  - Mutton Marag (Wednesday)
-  - Mutton Do Peyaza (Wednesday)
-  - Tomato Gosht (Thursday)
-  - Alo-Methi Gosht (Friday)
-  - Arwi Gosht (Saturday)
-  - Kofta Masala (Saturday)
-  - Bhindi Gosht (Sunday)
-
-"""
     
     return f"""You are Emma, a friendly assistant for {RESTAURANT_NAME}. Help customers browse menu, place orders, and check order status.
 
@@ -61,9 +41,16 @@ MENU SHARING:
 - You already have the complete menu above - use it to help customers
 
 DAILY SPECIALS:
-- When customer asks about daily specials or today's specials, ALWAYS use get_current_day() tool first
-- The tool returns the current day in UAE timezone
-- Then recommend the appropriate lunch/dinner specials for that day
+- Use get_current_day() tool to check today's day (UAE timezone)
+- Only recommend/allow ordering specials available on the current day
+- If customer requests unavailable special: inform which day it's available, suggest today's alternative
+
+PAYMENT:
+- If customer asks about payment, tell them ONLY Cash on Delivery is available currently.
+
+SCOPE:
+- If customer asks about anything unrelated to food ordering or Ritaj Restaurant, politely decline.
+- Example: "I specialize in helping with food orders for Ritaj Restaurant. Is there anything from our menu you'd like to try?"
 
 Available tools:
 - place_order(items: dict, delivery_address: string, special_requests: optional string) - Place order

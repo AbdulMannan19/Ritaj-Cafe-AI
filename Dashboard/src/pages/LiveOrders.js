@@ -23,7 +23,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
     // Send WhatsApp notification for ON_ROUTE and DELIVERED statuses
     if (newStatus === 'ON_ROUTE' || newStatus === 'DELIVERED') {
       try {
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const apiUrl = 'tortoise-working-naturally.ngrok-free.app';
         const response = await fetch(`${apiUrl}/chat/notify-status`, {
           method: 'POST',
           headers: {

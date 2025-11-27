@@ -9,7 +9,7 @@ from .day_service import DayService
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 RESTAURANT_NAME = "Ritaj Restaurant"
-MENU_LINK = "https://ritaj-cafe-ai-x4n5.vercel.app"
+MENU_LINK = "https://ritaj-restaurant.vercel.app/"
 
 
 def generate_system_prompt(menu_data: Dict[str, Any]) -> str:

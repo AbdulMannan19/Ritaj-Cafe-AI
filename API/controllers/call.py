@@ -122,7 +122,7 @@ def send_menu_link():
     if not phone_number:
         return jsonify({'error': f'No phone for call_id: {call_id}'}), 400
     
-    message = "Here's our complete menu: https://baba-chai.vercel.app"
+    message = "Here's our complete menu: https://ritaj-restaurant.vercel.app/"
     
     try:
         whatsapp_service.send_message(phone_number, message)
@@ -139,7 +139,7 @@ def send_menu_link():
 
 @call_bp.route('/get-current-day', methods=['POST'])
 def get_current_day():
-    """Get the current day of the week for daily specials"""
+
     from services.day_service import DayService
     
     day_service = DayService()

@@ -23,7 +23,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
     // Send WhatsApp notification for ON_ROUTE and DELIVERED statuses
     if (newStatus === 'ON_ROUTE' || newStatus === 'DELIVERED') {
       try {
-        const apiUrl = 'tortoise-working-naturally.ngrok-free.app';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://tortoise-working-naturally.ngrok-free.app';
         const response = await fetch(`${apiUrl}/chat/notify-status`, {
           method: 'POST',
           headers: {
@@ -145,7 +145,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
                       onClick={() => updateOrderStatus(order.order_id, 'ON_ROUTE')}
                       disabled={updatingStatus === order.order_id}
                     >
-                      Mark On Route
+                      {updatingStatus === order.order_id ? 'Updating...' : 'Mark On Route'}
                     </button>
                   )}
                   {order.status === 'ON_ROUTE' && (
@@ -154,7 +154,7 @@ const LiveOrders = ({ orders, onOrderUpdate, menuItems }) => {
                       onClick={() => updateOrderStatus(order.order_id, 'DELIVERED')}
                       disabled={updatingStatus === order.order_id}
                     >
-                      Mark Delivered
+                      {updatingStatus === order.order_id ? 'Updating...' : 'Mark Delivered'}
                     </button>
                   )}
                 </div>

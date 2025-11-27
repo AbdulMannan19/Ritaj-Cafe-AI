@@ -41,7 +41,6 @@ def place_order():
     if not raw_data:
         return jsonify({'error': 'No JSON data provided'}), 400
     
-    # Extract real call_id from nested 'call' object
     call_data = raw_data.get('call', {})
     call_id = call_data.get('call_id')
     
@@ -71,6 +70,36 @@ def place_order():
     
     if order_id:
         print(f"✅ Order {order_id} placed for {customer_phone_number}")
+        
+        order_response = db_service.supabase.table('orders').select('*').eq('order_id', order_id).single().execute()
+        
+        if order_response.data:
+            order = order_response.data
+            
+            items_dict = order.get('items', {})
+            items_list = []
+            
+            for item_id, quantity in items_dict.items():
+                menu_item = db_service.supabase.table('menu').select('name').eq('item_id', int(item_id)).execute()
+                if menu_item.data:
+                    item_name = menu_item.data[0]['name']
+                    if quantity > 1:
+                        items_list.append(f"{item_name} x{quantity}")
+                    else:
+                        items_list.append(item_name)
+            
+            items_text = ', '.join(items_list) if items_list else 'your order'
+            total = order.get('total_amount', 0)
+            
+            # Send WhatsApp confirmation
+            confirmation_message = f"Your order of {items_text} has been placed successfully! Total: {total} AED. We'll notify you when it's on the way."
+            
+            try:
+                whatsapp_service.send_message(customer_phone_number, confirmation_message)
+                print(f"✅ Order confirmation sent to {customer_phone_number}")
+            except Exception as e:
+                print(f"❌ Failed to send confirmation: {e}")
+        
         return jsonify({'order_id': order_id, 'message': 'Order placed successfully'}), 201
     else:
         return jsonify({'error': 'Failed to place order'}), 500
